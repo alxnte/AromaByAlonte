@@ -19,13 +19,13 @@ def discover():
         while True:
             try:
                 show_more_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Show more results')]")
+                if show_more_button.get_attribute("disabled"): # breaks out of loop if the button becomes unclickable but doesn't raise exception
+                    print("Exiting Loop: Show more button is disabled")
+                    break
                 driver.execute_script("arguments[0].scrollIntoView();", show_more_button)
                 driver.execute_script("arguments[0].click();", show_more_button)
                 driver.implicitly_wait(5)
                 time.sleep(5)
-                WebDriverWait(driver, 15).until(EC.staleness_of(show_more_button))
-                break
-
             except (NoSuchElementException):
                 print("Exiting Loop")
                 break
